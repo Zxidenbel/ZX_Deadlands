@@ -52,6 +52,7 @@ namespace Deadlands
         {
             LogInfo("DeadLans is working or skill issue?, wortking");
             On.RainWorld.OnModsInit += RainWorld_OnModsInit;
+            On.Menu.SleepAndDeathScreen.GetDataFromGame += SleepAndDeathScreen_GetDataFromGame;
         }
 
 
@@ -90,6 +91,15 @@ namespace Deadlands
             finally
             {
                 orig.Invoke(self);
+            }
+        }
+
+        private void SleepAndDeathScreen_GetDataFromGame(On.Menu.SleepAndDeathScreen.orig_GetDataFromGame orig, SleepAndDeathScreen self, KarmaLadderScreen.SleepDeathScreenDataPackage package)
+        {
+            orig(self, package);
+            if (package.mapData.regionName == "DL") //Will need to be updated or replaced with enum
+            {
+                self.mySoundLoopID = SoundID.None;
             }
         }
     }
